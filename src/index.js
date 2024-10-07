@@ -9,7 +9,8 @@ let time = 0;
 let timer;
 let lastHole = 0;
 let points = 0;
-let difficulty = "hard";
+let difficulty;
+let moleVisible = false;
 
 /**
  * Generates a random integer within a range.
@@ -22,7 +23,7 @@ let difficulty = "hard";
  */
 function randomInteger(min, max) {
   // completed function
-  return Math.floor(Math.random)() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /**
@@ -111,8 +112,11 @@ function chooseHole(holes) {
 *
 */
 function gameOver() {
-  // TODO: Write your code here
-  
+  if (time > 0) {
+    return showUp(); // Just call showUp if time > 0
+  } else {
+    return stopGame(); // Stop the game if time is 0
+  }
 }
 
 /**
@@ -124,10 +128,26 @@ function gameOver() {
 * to call `showAndHide(hole, delay)`.
 *
 */
+
+
 function showUp() {
-  let delay = 0; // TODO: Update so that it uses setDelay()
-  const hole = 0;  // TODO: Update so that it use chooseHole()
-  return showAndHide(hole, delay);
+  if (time > 0 && !moleVisible) {
+    moleVisible = true; // Set mole as visible
+    let delay = setDelay(difficulty); // Use the difficulty set in startGame
+    const hole = chooseHole(holes); // Choose a hole
+    toggleVisibility(hole, true); // Show the mole
+
+    // Schedule hiding the mole
+    setTimeout(() => {
+      toggleVisibility(hole, false); // Hide the mole
+      moleVisible = false; // Set mole as not visible
+      
+      // Schedule the next mole appearance after the delay
+      setTimeout(() => {
+        showUp(); // Call showUp again
+      }, delay);
+    }, delay);
+  }
 }
 
 /**
@@ -140,12 +160,12 @@ function showUp() {
 */
 function showAndHide(hole, delay){
   // TODO: call the toggleVisibility function so that it adds the 'show' class.
-  
+    toggleVisibility(hole);
   const timeoutID = setTimeout(() => {
     // TODO: call the toggleVisibility function so that it removes the 'show' class when the timer times out.
-    
+      toggleVisibility(hole);
     gameOver();
-  }, 0); // TODO: change the setTimeout delay to the one provided as a parameter
+  }, delay); // TODO: change the setTimeout delay to the one provided as a parameter
   return timeoutID;
 }
 
@@ -157,7 +177,7 @@ function showAndHide(hole, delay){
 */
 function toggleVisibility(hole){
   // TODO: add hole.classList.toggle so that it adds or removes the 'show' class.
-  
+  hole.classList.toggle('show');
   return hole;
 }
 
@@ -269,11 +289,22 @@ function stopGame(){
 * is clicked.
 *
 */
-function startGame(){
-  //setDuration(10);
-  //showUp();
-  return "game started";
+function startGame(selectedDifficulty) {
+  difficulty = selectedDifficulty; // Set the global difficulty variable
+  setDuration(10); // Set a base duration
+  if (difficulty === 'easy') {
+    setDuration(15); // Adjust the duration for easy difficulty
+  } else if (difficulty === 'normal') {
+    setDuration(10); // Adjust the duration for normal difficulty
+  } else if (difficulty === 'hard') {
+    setDuration(5); // Adjust the duration for hard difficulty
+  }
+
+  startTimer(); // Start the timer
+  gameOver(); // Start the game loop
+  return "game started"; // Return game started message
 }
+
 
 startButton.addEventListener("click", startGame);
 
