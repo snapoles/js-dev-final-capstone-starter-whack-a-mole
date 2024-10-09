@@ -139,6 +139,7 @@ function startTimer() {
 function whack(event) {
   updateScore();
   // Optionally, play a hit sound here if you have one
+  playAudio(audioHit);
   return points;
 }
 
@@ -164,11 +165,12 @@ function setDuration(duration) {
  * Stops the game by clearing the timer and hiding any visible moles.
  */
 function stopGame() {
+  stopAudio(song); 
   clearInterval(timer);
   holes.forEach((hole) => {
     hole.classList.remove('show'); // Hide any visible moles
   });
-  // Optionally, stop background music here if you have any
+  play();// Optionally, stop background music here if you have any
   return 'game stopped';
 }
 
@@ -180,10 +182,11 @@ function startGame() {
   clearScore(); // Reset the score
   startTimer(); // Start the countdown timer
   showUp(); // Start showing moles
-  // Optionally, play background music here if you have any
+  play();// Optionally, play background music here if you have any
   setEventListeners();
   return 'game started';
 }
+
 
 // Add event listener to the start button
 startButton.addEventListener('click', startGame);
