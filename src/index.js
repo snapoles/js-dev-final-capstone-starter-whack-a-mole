@@ -145,7 +145,7 @@ function whack() {
   // setEventListeners();  /* DO I KEEP HERE? */
   updateScore();
   // Optionally, play a hit sound here if you have one
-  // playAudio(audioHit);
+  playAudio(audioHit);
   return points;
 }
 
@@ -190,7 +190,7 @@ function startGame() {
   setEventListeners();
   startTimer(); // Start the countdown timer
   clearScore(); // Reset the score
-  // play();// Optionally, play background music here if you have any
+  play();// Optionally, play background music here if you have any
   return "game started";
 }
 
@@ -200,8 +200,8 @@ startButton.addEventListener('click', startGame);
 
 
 // Added Music
-const audioHit = new Audio('assets/hit.mp3');
-const song = new Audio('assets/molesong.mp3');
+const audioHit = new Audio("https://github.com/gabrielsanchez/erddiagram/blob/main/hit.mp3?raw=true");
+const song = new Audio("https://github.com/gabrielsanchez/erddiagram/blob/main/molesong.mp3?raw=true");
 
 function playAudio(audioObject) {
   audioObject.play();
