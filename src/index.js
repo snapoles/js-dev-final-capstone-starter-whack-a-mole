@@ -57,7 +57,11 @@ function chooseHole(holes) {
  */
 function gameOver() {
   if (time > 0) {
-    return showUp();
+    // console.log("GAMEOVER");
+    return setTimeout(() => {
+      return showUp();
+    },0)
+    
   } else {
     return stopGame();
   }
@@ -67,6 +71,7 @@ function gameOver() {
  * Calls the showAndHide() function with a specific delay and a hole.
  */
 function showUp() {
+  //console.log("SHOWUP");
   const delay = setDelay(difficulty);
   const hole = chooseHole(holes);
   return showAndHide(hole, delay);
@@ -119,7 +124,7 @@ function updateTimer() {
     time -= 1;
     timerDisplay.textContent = time;
   } else {
-    stopGame();
+    return stopGame();
   }
   return time;
 }
@@ -136,10 +141,11 @@ function startTimer() {
 /**
  * Event handler for clicking on a mole.
  */
-function whack(event) {
+function whack() {
+  // setEventListeners();  /* DO I KEEP HERE? */
   updateScore();
   // Optionally, play a hit sound here if you have one
-  playAudio(audioHit);
+  // playAudio(audioHit);
   return points;
 }
 
@@ -170,7 +176,7 @@ function stopGame() {
   holes.forEach((hole) => {
     hole.classList.remove('show'); // Hide any visible moles
   });
-  play();// Optionally, stop background music here if you have any
+  //play();// Optionally, stop background music here if you have any
   return 'game stopped';
 }
 
@@ -178,13 +184,14 @@ function stopGame() {
  * Starts the game when the start button is clicked.
  */
 function startGame() {
-  setDuration(10); // Set game duration in seconds
-  clearScore(); // Reset the score
-  startTimer(); // Start the countdown timer
+ // console.log("STARTGAME");
+  setDuration(15); // Set game duration in seconds
   showUp(); // Start showing moles
-  play();// Optionally, play background music here if you have any
   setEventListeners();
-  return 'game started';
+  startTimer(); // Start the countdown timer
+  clearScore(); // Reset the score
+  // play();// Optionally, play background music here if you have any
+  return "game started";
 }
 
 
